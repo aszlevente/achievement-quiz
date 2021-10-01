@@ -1,53 +1,59 @@
 import json
 import random
 
-questionN = 5
-score = 0
+def game() :
+    questionN = 5
+    score = 0
 
-with open('advancements.txt') as file :
-    advancements = json.load(file)
+    with open('advancements.txt') as file :
+        advancements = json.load(file)
 
-#list(advancements.keys())
+    #list(advancements.keys())
 
-while True :
-    reply = input('Gamemode:  (all, category) ').lower()
-    if reply in ['all', 'category'] :
-        break
-    else :
-        print('Na ezt most nem értettem!')
-
-if reply == 'category' :
     while True :
-        reply = input('Category: '+', '.join(list(advancements.keys())).lower()+' ').lower()
-        if reply in [i.lower() for i in advancements.keys()] :
+        reply = input('Gamemode:  (all, category) ').lower()
+        if reply in ['all', 'category'] :
             break
         else :
             print('Na ezt most nem értettem!')
-            
 
-print('\n\n\n')
+    if reply == 'category' :
+        while True :
+            reply = input('Category: '+', '.join(list(advancements.keys())).lower()+' ').lower()
+            if reply in [i.lower() for i in advancements.keys()] :
+                break
+            else :
+                print('Na ezt most nem értettem!')
+                
 
-adv = {}
-if reply == 'all' :
-    for i in advancements :
-        for l in advancements[i] :
-            adv[l] = advancements[i][l]
+    print('\n\n\n')
 
-else :
-    adv = advancements[reply.title()]
+    adv = {}
+    if reply == 'all' :
+        for i in advancements :
+            for l in advancements[i] :
+                adv[l] = advancements[i][l]
 
-for i in range(questionN) :
-    choice = random.randint(0, len(adv)-1)
-    question = adv[list(adv.keys())[choice]]
-    print(question+'\n')
-    answer = list(adv.keys())[list(adv.values()).index(question)]
-    playerAns = input('Na erre mit lépsz? ')
-    if playerAns.lower() == answer.lower() :
-        print('GG Ezt eltaláltad!\n')
-        score += 1
     else :
-        print('Hát ez nem talált!')
-        print('Megoldás: '+answer+'\n')
-    adv.pop(answer)
+        adv = advancements[reply.title()]
 
-print('A pontszámod: '+str(score))
+    for i in range(questionN) :
+        choice = random.randint(0, len(adv)-1)
+        question = adv[list(adv.keys())[choice]]
+        print(question+'\n')
+        answer = list(adv.keys())[list(adv.values()).index(question)]
+        playerAns = input('Na erre mit lépsz? ')
+        if playerAns.lower() == answer.lower() :
+            print('GG Ezt eltaláltad!\n')
+            score += 1
+        else :
+            print('Hát ez nem talált!')
+            print('Megoldás: '+answer+'\n')
+        adv.pop(answer)
+
+    print('A pontszámod: '+str(score))
+
+while True:
+    game()
+    if input("Egy replay? (y/n) " == 'n'):
+        break
